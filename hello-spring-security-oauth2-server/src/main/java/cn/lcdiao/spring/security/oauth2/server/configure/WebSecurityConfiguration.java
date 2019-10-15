@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -24,15 +25,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
+
     /**
      * 身份验证管理器生成器
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 在内存中创建用户
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("123456")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("admin888")).roles("ADMIN");
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password(passwordEncoder().encode("123456")).roles("USER")
+//                .and()
+//                .withUser("admin").password(passwordEncoder().encode("admin888")).roles("ADMIN");
+
+        auth.userDetailsService(userDetailsService());
     }
+
 }
