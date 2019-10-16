@@ -31,6 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        System.out.println("=============================================");
         TbUser tbUser = tbUserService.getByUsername(s);
         List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
         if (tbUser != null) {
